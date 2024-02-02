@@ -31,6 +31,15 @@ docker stop kind-control-plane
 docker start kind-control-plane
 ```
 
+## Enable metrics on cluster
+```shell
+kubectl apply -f cluster/components.yml
+
+kubectl get deployment metrics-server -n kube-system
+
+kubectl top node
+```
+
 ## Building image
 ```shell
 docker build -t alorencatto/fiap-postech-selfservice-fastfood .
@@ -46,6 +55,7 @@ kubectl apply -f code/config-map.yml -n postech
 kubectl apply -f code/deployment.yml -n postech
 kubectl apply -f code/service.yml -n postech
 kubectl apply -f code/nodeport-service.yml -n postech
+kubectl apply -f hpa/fiap-postech-selfservice-fastfood-hpa.yml -n postech
 
 -- Postgres
 kubectl apply -f postgres/pv.yml -n postech
@@ -73,10 +83,13 @@ kubectl get pvc -n postech
 kubectl get secrets -n postech
 
 kubectl get jobs -n postech
+kubectl get hpa -n postech
 
 kubectl describe service nginx-service -n postech
 kubectl describe deployment postgres-deployment -n postech
 kubectl describe pv postgres-pv -n postech
+
+kubectl top pod -n postech
 
 -- Exposing services
 kubectl port-forward service/svc-nodeport-fiap-postech-selfservice-fastfood --address 0.0.0.0 8000:8000 -n postech
@@ -84,8 +97,8 @@ kubectl port-forward service/svc-nodeport-fiap-postech-selfservice-fastfood --ad
 -- Rollout restart
 kubectl apply -f code/deployment.yml -n postech
 kubectl rollout restart deployment fiap-postech-selfservice-fastfood -n postech
-
 ```
+
 ## Logging
 ```shell
 
@@ -105,6 +118,7 @@ kubectl delete -f code/config-map.yml -n postech
 kubectl delete -f code/deployment.yml -n postech
 kubectl delete -f code/service.yml -n postech
 kubectl delete -f code/nodeport-service.yml -n postech
+kubectl delete -f hpa/fiap-postech-selfservice-fastfood-hpa.yml -n postech
 
 kubectl delete -f job/migration.yml -n postech
 
@@ -117,4 +131,11 @@ kubectl delete -f postgres/service.yml -n postech
 kubectl delete -f nginx/nginx-config.yml -n postech
 kubectl delete -f nginx/nginx-deployment.yml -n postech
 kubectl delete -f nginx/nginx-service.yml -n postech
+```
+
+## Stress test
+```shell
+k6 run scripts/stress-test/test-api.js
+
+kubectl describe deployment fiap-postech-selfservice-fastfood -n postech
 ```
