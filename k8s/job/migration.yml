@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: fiap-postech-selfservice-fastfood-migrations
+  namespace: postech
+spec:
+  ttlSecondsAfterFinished: 100
+  template:
+    spec:
+      containers:
+        - name: migration-container
+          image: alorencatto/fiap-postech-selfservice-fastfood:latest
+          command: [ "alembic","-c","migrations/alembic/alembic.ini", "upgrade", "head" ]
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: config-fiap-postech-selfservice-fastfood
+                  key: DATABASE_URL
+      restartPolicy: OnFailure
+  backoffLimit: 15

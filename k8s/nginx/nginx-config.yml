@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+  namespace: postech
+  labels:
+    app: fiap-postech-selfservice-fastfood
+data:
+  default.conf: |
+    upstream ecommerce_project {
+        server svc-fiap-postech-selfservice-fastfood:8000;
+    }
+    server {
+        listen 80;
+        location / {
+            proxy_pass http://svc-fiap-postech-selfservice-fastfood;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header Host $host;
+            proxy_redirect off;
+        }
+    }

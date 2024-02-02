@@ -1,0 +1,28 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: postgres-pv
+  namespace: postech
+  labels:
+    type: local
+    app: fiap-postech-selfservice-fastfood
+spec:
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: local-storage
+  capacity:
+    storage: 2Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+#  local:
+  hostPath:
+    #path: /run/desktop/mnt/host/e/postgres-data   # <-- if running with docker desktop in windows
+    path: "/tmp/kind/data"
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - kind-control-plane  # <-- name of the node (docker-desktop, minikube) etc.
