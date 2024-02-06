@@ -9,13 +9,13 @@ spec:
     spec:
       containers:
         - name: migration-container
-          image: alorencatto/fiap-postech-selfservice-fastfood:latest
+          image: alorencatto/poc-medium-fastapi-kubernetes:latest
           command: [ "alembic","-c","migrations/alembic/alembic.ini", "upgrade", "head" ]
           env:
             - name: DATABASE_URL
               valueFrom:
-                configMapKeyRef:
-                  name: config-fiap-postech-selfservice-fastfood
+                secretKeyRef:
+                  name: secret-poc-medium-fastapi-deployment
                   key: DATABASE_URL
       restartPolicy: OnFailure
   backoffLimit: 15

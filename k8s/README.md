@@ -17,6 +17,7 @@ multipass info k3s
 multipass shell k3s
 curl -sfL https://get.k3s.io | sh -
 ```
+
 ## Kind
 ```shell
 brew install kind
@@ -42,8 +43,8 @@ kubectl top node
 
 ## Building image
 ```shell
-docker build -t alorencatto/fiap-postech-selfservice-fastfood .
-docker push alorencatto/fiap-postech-selfservice-fastfood
+docker build -t alorencatto/poc-medium-fastapi-kubernetes .
+docker push alorencatto/poc-medium-fastapi-kubernetes
 ```
 
 ## Applying manifests
@@ -51,52 +52,52 @@ docker push alorencatto/fiap-postech-selfservice-fastfood
 kubectl apply -f namespace/ns.yml
 
 -- Application
-kubectl apply -f code/config-map.yml -n postech
-kubectl apply -f code/deployment.yml -n postech
-kubectl apply -f code/service.yml -n postech
-kubectl apply -f code/nodeport-service.yml -n postech
-kubectl apply -f hpa/fiap-postech-selfservice-fastfood-hpa.yml -n postech
+kubectl apply -f code/config-map.yml -n poc
+kubectl apply -f code/deployment.yml -n poc
+kubectl apply -f code/service.yml -n poc
+kubectl apply -f code/nodeport-service.yml -n poc
+kubectl apply -f hpa/fiap-poc-selfservice-fastfood-hpa.yml -n poc
 
 -- Postgres
-kubectl apply -f postgres/pv.yml -n postech
-kubectl apply -f postgres/secret.yml -n postech
-kubectl apply -f postgres/pvc.yml -n postech
-kubectl apply -f postgres/deployment.yml -n postech
-kubectl apply -f postgres/service.yml -n postech
+kubectl apply -f postgres/pv.yml -n poc
+kubectl apply -f postgres/secret.yml -n poc
+kubectl apply -f postgres/pvc.yml -n poc
+kubectl apply -f postgres/deployment.yml -n poc
+kubectl apply -f postgres/service.yml -n poc
 
 -- Migration Job
-kubectl apply -f job/migration-secret.yml -n postech # Not used yet
-kubectl apply -f job/migration.yml -n postech
+kubectl apply -f job/migration-secret.yml -n poc # Not used yet
+kubectl apply -f job/migration.yml -n poc
 
 -- Nginx
-kubectl apply -f nginx/nginx-config.yml -n postech
-kubectl apply -f nginx/nginx-deployment.yml -n postech
-kubectl apply -f nginx/nginx-service.yml -n postech
+kubectl apply -f nginx/nginx-config.yml -n poc
+kubectl apply -f nginx/nginx-deployment.yml -n poc
+kubectl apply -f nginx/nginx-service.yml -n poc
 
 -- Get resources
-kubectl get deployments -n postech
-kubectl get pods -n postech
+kubectl get deployments -n poc
+kubectl get pods -n poc
 
-kubectl get svc -n postech
-kubectl get pv -n postech
-kubectl get pvc -n postech
-kubectl get secrets -n postech
+kubectl get svc -n poc
+kubectl get pv -n poc
+kubectl get pvc -n poc
+kubectl get secrets -n poc
 
-kubectl get jobs -n postech
-kubectl get hpa -n postech
+kubectl get jobs -n poc
+kubectl get hpa -n poc
 
-kubectl describe service nginx-service -n postech
-kubectl describe deployment postgres-deployment -n postech
-kubectl describe pv postgres-pv -n postech
+kubectl describe service nginx-service -n poc
+kubectl describe deployment postgres-deployment -n poc
+kubectl describe pv postgres-pv -n poc
 
-kubectl top pod -n postech
+kubectl top pod -n poc
 
 -- Exposing services
 kubectl port-forward service/svc-nodeport-fiap-postech-selfservice-fastfood --address 0.0.0.0 8000:8000 -n postech
 
 -- Rollout restart
-kubectl apply -f code/deployment.yml -n postech
-kubectl rollout restart deployment fiap-postech-selfservice-fastfood -n postech
+kubectl apply -f code/deployment.yml -n poc
+kubectl rollout restart deployment fiap-postech-selfservice-fastfood -n poc
 ```
 
 ## Logging
@@ -104,38 +105,38 @@ kubectl rollout restart deployment fiap-postech-selfservice-fastfood -n postech
 
 kubectl get events --all-namespaces  --sort-by='.metadata.creationTimestamp'
 
-kubectl fiap-postech-selfservice-fastfood-84f4fcb59-j4fkf -n postech
-kubectl logs fiap-postech-selfservice-fastfood-nginx-deployment-55d6d96n7h6m -n postech
-kubectl logs postgres-deployment-857594b99c-tq8kn -n postech
-kubectl logs fiap-postech-selfservice-fastfood-migrations-7kkg5 -n postech
+kubectl fiap-postech-selfservice-fastfood-84f4fcb59-j4fkf -n poc
+kubectl logs fiap-postech-selfservice-fastfood-nginx-deployment-55d6d96n7h6m -n poc
+kubectl logs postgres-deployment-857594b99c-tq8kn -n poc
+kubectl logs fiap-postech-selfservice-fastfood-migrations-7kkg5 -n poc
 ```
 
 ## Housekeeping
 ```shell
 kubectl delete -f namespace/ns.yml
 
-kubectl delete -f code/config-map.yml -n postech
-kubectl delete -f code/deployment.yml -n postech
-kubectl delete -f code/service.yml -n postech
-kubectl delete -f code/nodeport-service.yml -n postech
-kubectl delete -f hpa/fiap-postech-selfservice-fastfood-hpa.yml -n postech
+kubectl delete -f code/config-map.yml -n poc
+kubectl delete -f code/deployment.yml -n poc
+kubectl delete -f code/service.yml -n poc
+kubectl delete -f code/nodeport-service.yml -n poc
+kubectl delete -f hpa/fiap-postech-selfservice-fastfood-hpa.yml -n poc
 
-kubectl delete -f job/migration.yml -n postech
+kubectl delete -f job/migration.yml -n poc
 
-kubectl delete -f postgres/pv.yml -n postech
-kubectl delete -f postgres/secret.yml -n postech
-kubectl delete -f postgres/deployment.yml -n postech
-kubectl delete -f postgres/pvc.yml -n postech
-kubectl delete -f postgres/service.yml -n postech
+kubectl delete -f postgres/pv.yml -n poc
+kubectl delete -f postgres/secret.yml -n poc
+kubectl delete -f postgres/deployment.yml -n poc
+kubectl delete -f postgres/pvc.yml -n poc
+kubectl delete -f postgres/service.yml -n poc
 
-kubectl delete -f nginx/nginx-config.yml -n postech
-kubectl delete -f nginx/nginx-deployment.yml -n postech
-kubectl delete -f nginx/nginx-service.yml -n postech
+kubectl delete -f nginx/nginx-config.yml -n poc
+kubectl delete -f nginx/nginx-deployment.yml -n poc
+kubectl delete -f nginx/nginx-service.yml -n poc
 ```
 
 ## Stress test
 ```shell
 k6 run scripts/stress-test/test-api.js
 
-kubectl describe deployment fiap-postech-selfservice-fastfood -n postech
+kubectl describe deployment fiap-postech-selfservice-fastfood -n poc
 ```

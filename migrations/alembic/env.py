@@ -5,9 +5,6 @@ from sqlalchemy import engine_from_config, pool
 
 from src.infrastructure.config.settings import Config
 from src.infrastructure.database.sqlalchemy.models import (
-    order,
-    payment,
-    product,
     user,
 )
 from src.infrastructure.database.sqlalchemy.orm import Base

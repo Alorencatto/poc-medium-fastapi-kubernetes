@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from src.infrastructure.http.api_v1.endpoints import products, users, order
+from src.infrastructure.http.api_v1.endpoints import users
 
 router = APIRouter()
 
@@ -11,5 +11,3 @@ async def read_root():
 
 
 router.include_router(users.router)
-router.include_router(products.router)
-router.include_router(order.router)

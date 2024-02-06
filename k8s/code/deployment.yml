@@ -1,23 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fiap-postech-selfservice-fastfood
+  name: poc-medium-fastapi-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: fiap-postech-selfservice-fastfood
+      app: poc-medium-fastapi-deployment
   template:
     metadata:
       labels:
-        app: fiap-postech-selfservice-fastfood
+        app: poc-medium-fastapi-deployment
     spec:
       containers:
-      - name: fiap-postech-selfservice-fastfood
-        image: alorencatto/fiap-postech-selfservice-fastfood:latest
-#        command: ["bash","-c","while","!</dev/tcp/postgres/5432",";","do","sleep","1",";","done",";","uvicorn","src.infrastructure.http.app:app","--host","0.0.0.0","--port","8000","--reload"]
+      - name: poc-medium-fastapi
+        image: alorencatto/poc-medium-fastapi-kubernetes:latest # TODO : Mudar aqui
         command: ["uvicorn","src.infrastructure.http.app:app","--host","0.0.0.0","--port","8000","--reload"]
-#        command: "bash -c 'while !</dev/tcp/postgres/5432; do sleep 1; done; uvicorn src.infrastructure.http.app:app --host 0.0.0.0 --port 8000 --reload'"
         ports:
         - containerPort: 8000
         readinessProbe:
@@ -41,6 +39,6 @@ spec:
         env:
           - name: DATABASE_URL
             valueFrom:
-              configMapKeyRef:
-                name: config-fiap-postech-selfservice-fastfood
+              secretKeyRef:
+                name: secret-poc-medium-fastapi-deployment
                 key: DATABASE_URL

@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: svc-nodeport-fiap-postech-selfservice-fastfood
+  name: svc-nodeport-poc-medium-fastapi-deployment
 spec:
   selector:
-    app: fiap-postech-selfservice-fastfood
+    app: poc-medium-fastapi-deployment
   ports:
     - protocol: TCP
       port: 8000

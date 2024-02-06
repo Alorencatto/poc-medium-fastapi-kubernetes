@@ -23,5 +23,5 @@
 
 ### Migrations command examples
 
-- `alembic -c migrations/alembic/alembic.ini revision --autogenerate -m"First commit"`
+- `alembic -c migrations/alembic/alembic.ini revision --autogenerate -m" First commit" `
 - `alembic -c migrations/alembic/alembic.ini upgrade head`
