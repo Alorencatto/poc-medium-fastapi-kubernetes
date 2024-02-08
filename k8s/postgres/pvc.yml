@@ -2,10 +2,10 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: postgres-pvc
-  namespace: postech
+  namespace: poc
   labels:
     type: local
-    app: fiap-postech-selfservice-fastfood
+    app: poc-medium-fastapi-deployment
 spec:
   storageClassName: local-storage
   accessModes:

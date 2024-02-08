@@ -2,10 +2,10 @@ kind: PersistentVolume
 apiVersion: v1
 metadata:
   name: postgres-pv
-  namespace: postech
+  namespace: poc
   labels:
     type: local
-    app: fiap-postech-selfservice-fastfood
+    app: poc-medium-fastapi-deployment
 spec:
   persistentVolumeReclaimPolicy: Delete
   storageClassName: local-storage
@@ -14,9 +14,7 @@ spec:
   volumeMode: Filesystem
   accessModes:
     - ReadWriteMany
-#  local:
   hostPath:
-    #path: /run/desktop/mnt/host/e/postgres-data   # <-- if running with docker desktop in windows
     path: "/tmp/kind/data"
   nodeAffinity:
     required:

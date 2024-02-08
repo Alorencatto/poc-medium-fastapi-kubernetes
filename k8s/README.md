@@ -52,11 +52,10 @@ docker push alorencatto/poc-medium-fastapi-kubernetes
 kubectl apply -f namespace/ns.yml
 
 -- Application
-kubectl apply -f code/config-map.yml -n poc
+kubectl apply -f code/secret.yml -n poc
 kubectl apply -f code/deployment.yml -n poc
-kubectl apply -f code/service.yml -n poc
 kubectl apply -f code/nodeport-service.yml -n poc
-kubectl apply -f hpa/fiap-poc-selfservice-fastfood-hpa.yml -n poc
+kubectl apply -f hpa/app-hpa.yml -n poc
 
 -- Postgres
 kubectl apply -f postgres/pv.yml -n poc
@@ -66,7 +65,6 @@ kubectl apply -f postgres/deployment.yml -n poc
 kubectl apply -f postgres/service.yml -n poc
 
 -- Migration Job
-kubectl apply -f job/migration-secret.yml -n poc # Not used yet
 kubectl apply -f job/migration.yml -n poc
 
 -- Nginx
@@ -93,7 +91,7 @@ kubectl describe pv postgres-pv -n poc
 kubectl top pod -n poc
 
 -- Exposing services
-kubectl port-forward service/svc-nodeport-fiap-postech-selfservice-fastfood --address 0.0.0.0 8000:8000 -n postech
+kubectl port-forward service/svc-nodeport-poc-medium-fastapi-deployment --address 0.0.0.0 8000:8000 -n poc
 
 -- Rollout restart
 kubectl apply -f code/deployment.yml -n poc
@@ -115,11 +113,10 @@ kubectl logs fiap-postech-selfservice-fastfood-migrations-7kkg5 -n poc
 ```shell
 kubectl delete -f namespace/ns.yml
 
-kubectl delete -f code/config-map.yml -n poc
+kubectl delete -f code/secret.yml -n poc
 kubectl delete -f code/deployment.yml -n poc
-kubectl delete -f code/service.yml -n poc
 kubectl delete -f code/nodeport-service.yml -n poc
-kubectl delete -f hpa/fiap-postech-selfservice-fastfood-hpa.yml -n poc
+kubectl delete -f hpa/app-hpa.yml -n poc
 
 kubectl delete -f job/migration.yml -n poc
 
@@ -138,5 +135,5 @@ kubectl delete -f nginx/nginx-service.yml -n poc
 ```shell
 k6 run scripts/stress-test/test-api.js
 
-kubectl describe deployment fiap-postech-selfservice-fastfood -n poc
+kubectl describe deployment poc-medium-fastapi-deployment -n poc
 ```

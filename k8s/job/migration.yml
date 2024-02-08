@@ -1,8 +1,8 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: fiap-postech-selfservice-fastfood-migrations
-  namespace: postech
+  name: poc-medium-fastapi-deployment-migrations
+  namespace: poc
 spec:
   ttlSecondsAfterFinished: 100
   template:

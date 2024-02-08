@@ -1,8 +1,4 @@
-# FIAP - Pos Tech - Self-service restaurant
-
-## Event Stormming
-
--[Miro](https://miro.com/welcomeonboard/M0QySElxVFd1a0ozTUs5eUFxUHh3ZTYxeUZoM2kxb2lTWlJBR0RTWDc0aVRLWFg1SWgzam9CcFJuM3FFOG95SHwzMDc0NDU3MzU1MjY5Nzg4Njk5fDI=?share_link_id=271651641849)
+# Poc Medium FastAPI Kubernetes
 
 ## Usage
 

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: poc-medium-fastapi
-        image: alorencatto/poc-medium-fastapi-kubernetes:latest # TODO : Mudar aqui
+        image: alorencatto/poc-medium-fastapi-kubernetes:latest
         command: ["uvicorn","src.infrastructure.http.app:app","--host","0.0.0.0","--port","8000","--reload"]
         ports:
         - containerPort: 8000

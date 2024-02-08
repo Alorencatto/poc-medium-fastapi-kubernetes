@@ -2,7 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: postgres-service
-  namespace: postech
+  namespace: poc
 spec:
   selector:
     app: postgres-container
